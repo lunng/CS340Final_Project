@@ -64,6 +64,24 @@ def getLinks(wikiURL):
 	for link in unformatted_links:
 		links.append(link.get('href'))
 	return links
+	
+def getPlayers(link):
+	wiki = 'https://en.wikipedia.org'
+	wikiURL = wiki + link
+	rawPage = getPage(wikiURL)
+	
+	soup = BeautifulSoup(rawPage, 'lxml')
+	
+	myList = soup.find('div', {'class':'columns'})
+	
+	links = []
+	
+
+	unformatted_links = myList.findAll('a')
+	for link in unformatted_links:
+		links.append(link.get('href'))
+			
+	return links
 
 def main():
 	wiki = "https://en.wikipedia.org/w/api.php?"
@@ -77,10 +95,12 @@ def main():
 	print(wikiURL)
 
 	links = getLinks(wikiURL)
-		
+	players = getPlayers(links[0])
+	
 
 	print(links)
-
+	print()
+	print(players)
 
 	#https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&titles=Scott%20Aaronson
 	#https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&titles=List%20of%20computer%20scientists
