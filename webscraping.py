@@ -111,6 +111,7 @@ def getStats(link):
 	BPG = []
 	PPG = []
 
+
 	for row in regSeasonTable.findAll("tr"):	
 		cells = row.findAll("td")
 		if len(cells) == 13:
@@ -130,21 +131,21 @@ def getStats(link):
 			
 	#playoffsTable = soup.findAll("table", table_classes)[1]
 
-	Year = [x.encode('UTF8') for x in Year]
-	Team = [x.encode('UTF8') for x in Team]
-	GP = [x.encode('UTF8') for x in GP]
-	GS = [x.encode('UTF8') for x in GS]
-	MPG = [x.encode('UTF8') for x in MPG]
-	FG = [x.encode('UTF8') for x in FG]
-	threeP = [x.encode('UTF8') for x in threeP]
-	FT = [x.encode('UTF8') for x in FT]
-	RPG = [x.encode('UTF8') for x in RPG]
-	APG = [x.encode('UTF8') for x in APG]
-	SPG = [x.encode('UTF8') for x in SPG]
-	BPG = [x.encode('UTF8') for x in BPG]
-	PPG = [x.encode('UTF8') for x in PPG]
-
-	print(GP) 
+	AllStats = []
+	AllStats.append(Year)
+	AllStats.append(Team)
+	AllStats.append(GP)
+	AllStats.append(GS)
+	AllStats.append(MPG)
+	AllStats.append(FG)
+	AllStats.append(threeP)
+	AllStats.append(FT)
+	AllStats.append(RPG)
+	AllStats.append(APG)
+	AllStats.append(SPG)
+	AllStats.append(BPG)
+	AllStats.append(PPG)
+	return AllStats
 
 def main():
 	wiki = "https://en.wikipedia.org/w/api.php?"
@@ -160,9 +161,9 @@ def main():
 	links = getLinks(wikiURL)
 	players = getPlayers(links[0])
 	
-
-	#getStats(players[0])
-
+	stats = getStats(players[0])
+	for i in stats:
+		print(i)
 
 
 	#print(links)
