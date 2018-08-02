@@ -83,6 +83,69 @@ def getPlayers(link):
 			
 	return links
 
+# gets career stats for a single player  
+def getStats(link):
+	#print(link)
+	wiki = 'https://en.wikipedia.org'
+	wikiURL = wiki + link  
+	rawPage = getPage(wikiURL)
+	soup = BeautifulSoup(rawPage, 'lxml')
+	table_classes = {"class": ["sortable", "plainrowheaders"]}
+	
+
+	# finds first sortable table (which is reg season stats table)
+	regSeasonTable = soup.findAll("table", table_classes)[0]
+	
+	# Lists to store stats for each category 
+	Year = []
+	Team = []
+	GP = []
+	GS = []
+	MPG = []
+	FG = []
+	threeP = []
+	FT = []
+	RPG = []
+	APG = []
+	SPG = []
+	BPG = []
+	PPG = []
+
+	for row in regSeasonTable.findAll("tr"):	
+		cells = row.findAll("td")
+		if len(cells) == 13:
+			Year.append(cells[0].find(text=True))
+			Team.append(cells[1].find(text=True))
+			GP.append(cells[2].find(text=True))
+			GS.append(cells[3].find(text=True))
+			MPG.append(cells[4].find(text=True))
+			FG.append(cells[5].find(text=True))
+			threeP.append(cells[6].find(text=True))
+			FT.append(cells[7].find(text=True))
+			RPG.append(cells[8].find(text=True))
+			APG.append(cells[9].find(text=True))
+			SPG.append(cells[10].find(text=True))
+			BPG.append(cells[11].find(text=True))
+			PPG.append(cells[12].find(text=True))
+			
+	#playoffsTable = soup.findAll("table", table_classes)[1]
+
+	Year = [x.encode('UTF8') for x in Year]
+	Team = [x.encode('UTF8') for x in Team]
+	GP = [x.encode('UTF8') for x in GP]
+	GS = [x.encode('UTF8') for x in GS]
+	MPG = [x.encode('UTF8') for x in MPG]
+	FG = [x.encode('UTF8') for x in FG]
+	threeP = [x.encode('UTF8') for x in threeP]
+	FT = [x.encode('UTF8') for x in FT]
+	RPG = [x.encode('UTF8') for x in RPG]
+	APG = [x.encode('UTF8') for x in APG]
+	SPG = [x.encode('UTF8') for x in SPG]
+	BPG = [x.encode('UTF8') for x in BPG]
+	PPG = [x.encode('UTF8') for x in PPG]
+
+	print(GP) 
+
 def main():
 	wiki = "https://en.wikipedia.org/w/api.php?"
 	tutorial = 'http://econpy.pythonanywhere.com/ex/001.html'
@@ -92,15 +155,19 @@ def main():
 	#wikiURL = searchWikiURL(wiki, 'NBA Players', '10')
 	#wikiURL = queryWikiURL(wiki, ['Computer', 'Computer Science'])
 	wikiURL = 'https://en.wikipedia.org/wiki/Lists_of_National_Basketball_Association_players'
-	print(wikiURL)
+	#print(wikiURL)
 
 	links = getLinks(wikiURL)
 	players = getPlayers(links[0])
 	
 
-	print(links)
-	print()
-	print(players)
+	#getStats(players[0])
+
+
+
+	#print(links)
+	#print()
+	#print(players)
 
 	#https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&titles=Scott%20Aaronson
 	#https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&titles=List%20of%20computer%20scientists
