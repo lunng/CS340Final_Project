@@ -78,11 +78,12 @@ def getPlayerStats():
     #should print page html
     #print(soup.prettify())
     #under wikisortable are the tables catergory names like year, team, etc.
-    My_table = soup.find('table',{'class':'wikitable sortable'})
+    My_table = soup.findAll('table',{'class':'wikitable sortable'})
     #links will contain the titles(catergory name) in them
     links = My_table.findAll('a')
     #links
     #creating a dictionary
+    Year = []
     Teams = []
     for link in links:
         Teams.append(link.get('title'))
