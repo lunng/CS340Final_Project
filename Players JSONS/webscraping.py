@@ -2,7 +2,9 @@ import os
 import sys
 from bs4 import BeautifulSoup
 from lxml import etree, objectify
+from pathlib import Path 
 import requests
+import json
 
 header = {
     'User-Agent': 'Gray Lunn',
@@ -131,21 +133,45 @@ def getStats(link):
 			
 	#playoffsTable = soup.findAll("table", table_classes)[1]
 
-	AllStats = []
-	AllStats.append(Year)
-	AllStats.append(Team)
-	AllStats.append(GP)
-	AllStats.append(GS)
-	AllStats.append(MPG)
-	AllStats.append(FG)
-	AllStats.append(threeP)
-	AllStats.append(FT)
-	AllStats.append(RPG)
-	AllStats.append(APG)
-	AllStats.append(SPG)
-	AllStats.append(BPG)
-	AllStats.append(PPG)
+	# AllStats = []
+	# AllStats.append(Year)
+	# AllStats.append(Team)
+	# AllStats.append(GP)
+	# AllStats.append(GS)
+	# AllStats.append(MPG)
+	# AllStats.append(FG)
+	# AllStats.append(threeP)
+	# AllStats.append(FT)
+	# AllStats.append(RPG)
+	# AllStats.append(APG)
+	# AllStats.append(SPG)
+	# AllStats.append(BPG)
+	# AllStats.append(PPG)
+	
+	AllStats = {}
+	AllStats['Year'] = Year
+	AllStats['Team'] = Team
+	AllStats['GP'] = GP
+	AllStats['GS'] = GS
+	AllStats['MPG'] = MPG
+	AllStats['FG'] = FG
+	AllStats['threeP'] = threeP
+	AllStats['FT'] = FT
+	AllStats['RPG'] = RPG
+	AllStats['APG'] = APG
+	AllStats['SPG'] = SPG
+	AllStats['BPG'] = BPG
+	AllStats['PPG'] = PPG
 	return AllStats
+	
+def statsToFile(stats, player):
+	string = json.dumps(stats)
+	filename = player + ".json"
+	filename = filename.replace("/wiki/", "")
+	file = open(filename, "w+")
+	file.write(string)
+	file.close()
+	
 
 def main():
 	wiki = "https://en.wikipedia.org/w/api.php?"
@@ -159,12 +185,21 @@ def main():
 	#print(wikiURL)
 
 	links = getLinks(wikiURL)
-	players = getPlayers(links[0])
-	
-	stats = getStats(players[0])
-	for i in stats:
-		print(i)
-
+	# players = getPlayers(links[0])
+	# stats = getStats(players[0])
+	i = 0
+	#print(stats)
+	for link in links:
+		if i >= 10:
+			break
+		players = getPlayers(link)
+		for player in players:
+			if i >= 10:
+				break
+			stats = getStats(player)
+			statsToFile(stats, player)
+			i = i+1
+			
 
 	#print(links)
 	#print()
