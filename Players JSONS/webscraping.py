@@ -96,7 +96,11 @@ def getStats(link):
 	
 
 	# finds first sortable table (which is reg season stats table)
-	regSeasonTable = soup.findAll("table", table_classes)[0]
+	Tables = soup.findAll("table", table_classes)
+	try:
+		regSeasonTable = Tables[0]
+	except IndexError:
+		return {}
 	
 	# Lists to store stats for each category 
 	Year = []
@@ -147,7 +151,7 @@ def getStats(link):
 	# AllStats.append(SPG)
 	# AllStats.append(BPG)
 	# AllStats.append(PPG)
-	
+		
 	AllStats = {}
 	AllStats['Year'] = Year
 	AllStats['Team'] = Team
@@ -168,7 +172,10 @@ def statsToFile(stats, player):
 	string = json.dumps(stats)
 	filename = player + ".json"
 	filename = filename.replace("/wiki/", "")
-	file = open(filename, "w+")
+	try:
+		file = open(filename, "w+")
+	except FileNotFoundError:
+		return
 	file.write(string)
 	file.close()
 	
@@ -190,12 +197,8 @@ def main():
 	i = 0
 	#print(stats)
 	for link in links:
-		if i >= 10:
-			break
 		players = getPlayers(link)
 		for player in players:
-			if i >= 10:
-				break
 			stats = getStats(player)
 			statsToFile(stats, player)
 			i = i+1
