@@ -2,7 +2,9 @@ import os
 import sys
 from bs4 import BeautifulSoup
 from lxml import etree, objectify
+from pathlib import Path 
 import requests
+import json
 
 header = {
     'User-Agent': 'Gray Lunn',
@@ -83,6 +85,94 @@ def getPlayers(link):
 			
 	return links
 
+# gets career stats for a single player  
+def getStats(link):
+	#print(link)
+	wiki = 'https://en.wikipedia.org'
+	wikiURL = wiki + link  
+	rawPage = getPage(wikiURL)
+	soup = BeautifulSoup(rawPage, 'lxml')
+	table_classes = {"class": ["sortable", "plainrowheaders"]}
+	
+
+	# finds first sortable table (which is reg season stats table)
+	regSeasonTable = soup.findAll("table", table_classes)[0]
+	
+	# Lists to store stats for each category 
+	Year = []
+	Team = []
+	GP = []
+	GS = []
+	MPG = []
+	FG = []
+	threeP = []
+	FT = []
+	RPG = []
+	APG = []
+	SPG = []
+	BPG = []
+	PPG = []
+
+
+	for row in regSeasonTable.findAll("tr"):	
+		cells = row.findAll("td")
+		if len(cells) == 13:
+			Year.append(cells[0].find(text=True))
+			Team.append(cells[1].find(text=True))
+			GP.append(cells[2].find(text=True))
+			GS.append(cells[3].find(text=True))
+			MPG.append(cells[4].find(text=True))
+			FG.append(cells[5].find(text=True))
+			threeP.append(cells[6].find(text=True))
+			FT.append(cells[7].find(text=True))
+			RPG.append(cells[8].find(text=True))
+			APG.append(cells[9].find(text=True))
+			SPG.append(cells[10].find(text=True))
+			BPG.append(cells[11].find(text=True))
+			PPG.append(cells[12].find(text=True))
+			
+	#playoffsTable = soup.findAll("table", table_classes)[1]
+
+	# AllStats = []
+	# AllStats.append(Year)
+	# AllStats.append(Team)
+	# AllStats.append(GP)
+	# AllStats.append(GS)
+	# AllStats.append(MPG)
+	# AllStats.append(FG)
+	# AllStats.append(threeP)
+	# AllStats.append(FT)
+	# AllStats.append(RPG)
+	# AllStats.append(APG)
+	# AllStats.append(SPG)
+	# AllStats.append(BPG)
+	# AllStats.append(PPG)
+	
+	AllStats = {}
+	AllStats['Year'] = Year
+	AllStats['Team'] = Team
+	AllStats['GP'] = GP
+	AllStats['GS'] = GS
+	AllStats['MPG'] = MPG
+	AllStats['FG'] = FG
+	AllStats['threeP'] = threeP
+	AllStats['FT'] = FT
+	AllStats['RPG'] = RPG
+	AllStats['APG'] = APG
+	AllStats['SPG'] = SPG
+	AllStats['BPG'] = BPG
+	AllStats['PPG'] = PPG
+	return AllStats
+	
+def statsToFile(stats, player):
+	string = json.dumps(stats)
+	filename = player + ".json"
+	filename = filename.replace("/wiki/", "")
+	file = open(filename, "w+")
+	file.write(string)
+	file.close()
+	
+
 def main():
 	wiki = "https://en.wikipedia.org/w/api.php?"
 	tutorial = 'http://econpy.pythonanywhere.com/ex/001.html'
@@ -92,15 +182,28 @@ def main():
 	#wikiURL = searchWikiURL(wiki, 'NBA Players', '10')
 	#wikiURL = queryWikiURL(wiki, ['Computer', 'Computer Science'])
 	wikiURL = 'https://en.wikipedia.org/wiki/Lists_of_National_Basketball_Association_players'
-	print(wikiURL)
+	#print(wikiURL)
 
 	links = getLinks(wikiURL)
-	players = getPlayers(links[0])
-	
+	# players = getPlayers(links[0])
+	# stats = getStats(players[0])
+	i = 0
+	#print(stats)
+	for link in links:
+		if i >= 10:
+			break
+		players = getPlayers(link)
+		for player in players:
+			if i >= 10:
+				break
+			stats = getStats(player)
+			statsToFile(stats, player)
+			i = i+1
+			
 
-	print(links)
-	print()
-	print(players)
+	#print(links)
+	#print()
+	#print(players)
 
 	#https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&titles=Scott%20Aaronson
 	#https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&titles=List%20of%20computer%20scientists
