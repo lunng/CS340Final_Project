@@ -66,36 +66,6 @@ def getLinks(wikiURL):
 		links.append(link.get('href'))
 	return links
 
-######################################################################
-# Parses player career statistic tables from wiki using beautiful soup
-# following medium.com tutorial         REGULAR SEASON
-######################################################################
-def getPlayerStats():
-    print ("###########################################")
-    dwade_url = requests.get('https://en.wikipedia.org/wiki/Dwyane_Wade').text
-    #creating parse tree to extract data from HTML
-    soup = BeautifulSoup(dwade_url,'lxml')
-    #should print page html
-    #print(soup.prettify())
-    #under wikisortable are the tables catergory names like year, team, etc.
-    My_table = soup.findAll('table',{'class':'wikitable sortable'})
-    #links will contain the titles(catergory name) in them
-    links = My_table.findAll('a')
-    #links
-    #creating a dictionary
-    Year = []
-    Teams = []
-    for link in links:
-        Teams.append(link.get('title'))
-    #should print multiple Miami, then Chicago, then Cleveland
-    print(Teams)
-
-
-
-
-
-
-
 
 def main():
 	wiki = "https://en.wikipedia.org/w/api.php?"
