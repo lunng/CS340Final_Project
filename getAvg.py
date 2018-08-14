@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# coding=utf-8
 import json
 import os.path
 
@@ -44,6 +43,8 @@ def getAverage(p, f):
 
 
 def main():
+	# pass in the name of the player to generate avg stat
+	# for eg, read 'Allen_Iverson.json' and write to 'Allen_Iverson_avg.json'
 	p = 'Allen_Iverson'
 	f = '.json'
 	getAverage(p, f)
