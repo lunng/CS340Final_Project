@@ -108,7 +108,7 @@ def getImageLink(link, playerName):
 
 	infoTable = soup.findAll("table", {"class": "infobox vcard"})
 	if not infoTable:
-		return {}
+		return ({'name': playerName, 'imageLink':  ''})
 
 	try:
 		infoTable = infoTable[0]
