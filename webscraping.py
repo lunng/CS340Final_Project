@@ -75,7 +75,7 @@ def getPlayers(link):
 	soup = BeautifulSoup(rawPage, 'lxml')
 	
 	myList = soup.find('div', {'class':'columns'})
-	
+	print(myList)
 	links = []
 	
 
@@ -84,6 +84,46 @@ def getPlayers(link):
 		links.append(link.get('href'))
 			
 	return links
+	
+def getPlayerName(link):
+	wiki = 'https://en.wikipedia.org'
+	wikiURL = wiki + link
+	rawPage = getPage(wikiURL)
+	
+	soup = BeautifulSoup(rawPage, 'lxml')
+	
+	title = soup.find('h1', {"id": "firstHeading"})
+	print(title.text)
+	
+	return title.text
+
+
+# return dict of specific player's image link 
+def getImageLink(link, playerName):
+	wiki = 'https://en.wikipedia.org'
+	wikiURL = wiki + link  
+	rawPage = getPage(wikiURL)
+	soup = BeautifulSoup(rawPage, 'lxml')
+	#print(wikiURL)
+
+	infoTable = soup.findAll("table", {"class": "infobox vcard"})
+	if not infoTable:
+		return {}
+
+	try:
+		infoTable = infoTable[0]
+	except IndexError:
+		return {}
+
+	for tr in infoTable.findAll("tr"):	
+		for td in infoTable.findAll("td"):
+			for img in td.findAll('a', {"class": "image"}):
+				src=img.find('img')['src']
+				if src:
+					return ({'name': playerName, 'imageLink':  src})
+				else:
+					return ({'name': '', 'imageLink': ''})
+
 
 # gets career stats for a single player  
 def getStats(link):
@@ -175,10 +215,22 @@ def getStats(link):
 			i += 1
 	return AllStats
 	
-def statsToFile(stats, player):
+def statsToFile(stats, player, name):
+	name = name.replace("(basketball)", "")
+	list_item = []
+	list_item.append(name)
+	stats["Name"] = list_item
 	string = json.dumps(stats)
-	filename = player + ".json"
+	filename = "./Players JSONS/"
+	filename += player + ".json"
 	filename = filename.replace("/wiki/", "")
+<<<<<<< HEAD:Players JSONS/webscraping.py
+=======
+	filename = filename.replace("/w/index.php?title=", "")
+	filename = filename.replace("_(basketball)&action=edit&redlink=1", "")
+	filename = filename.replace("_(basketball)", "")
+	print(filename)
+>>>>>>> master:webscraping.py
 	try:
 		file = open(filename, "w+")
 	except FileNotFoundError:
@@ -198,6 +250,8 @@ def main():
 	wikiURL = 'https://en.wikipedia.org/wiki/Lists_of_National_Basketball_Association_players'
 	#print(wikiURL)
 
+	imageLinkLists = []
+
 	links = getLinks(wikiURL)
 	# players = getPlayers(links[0])
 	# stats = getStats(players[0])
@@ -207,7 +261,11 @@ def main():
 		players = getPlayers(link)
 		for player in players:
 			stats = getStats(player)
-			statsToFile(stats, player)
+			name = getPlayerName(player)
+
+			imageLinkLists.append(getImageLink(player, name))
+
+			statsToFile(stats, player, name)
 			i = i+1
 			
 
