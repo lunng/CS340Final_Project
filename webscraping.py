@@ -122,7 +122,7 @@ def getImageLink(link, playerName):
 				if src:
 					return ({'name': playerName, 'imageLink':  src})
 				else:
-					return ({'name': '', 'imageLink': ''})
+					return ({'name': playerName, 'imageLink': ''})
 
 
 # gets career stats for a single player  
