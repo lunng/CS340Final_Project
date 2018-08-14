@@ -260,6 +260,9 @@ def main():
 	for link in links:
 		players = getPlayers(link)
 		for player in players:
+			if (i >= 10):
+				break
+
 			stats = getStats(player)
 			name = getPlayerName(player)
 
