@@ -7,6 +7,11 @@ def index():
 	print("Someone is at the home page.")
 	return render_template('search.html')
 
+@app.errorhandler(404)
+def page_not_found(e):
+   return render_template('404.html'), 404
+
+
 @app.route('/my-link/')
 def my_link():
 	print('I got clicked!')
