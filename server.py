@@ -13,7 +13,7 @@ def my_link():
 	return 'Click.'
 
 @app.route('/results/', methods=['GET', 'POST'])
-def results():
+# def results():
 	if request.method == 'POST':
 		data = request.form
 	else:
@@ -21,9 +21,9 @@ def results():
 
 	query = data.get('searchterm')
 	print("You searched for: " + query)
-	firstName = ['Ben','Sarah', 'Xandar', 'Ellewyn']
-	lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
-	return render_template('results.html', query=query, results=zip(firstName, lastName))
+	# firstName = ['Ben','Sarah', 'Xandar', 'Ellewyn']
+	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
+	return render_template('results.html', query=query) #,results=zip(firstName, lastName))
 
 if __name__ == '__main__':
 	app.run(debug=True)
