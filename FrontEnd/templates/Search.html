@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- CSS Bootstrap style sheet -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href= "index.css">
+
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}">
+		<title>Welcome to the sample!!</title>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		  <ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="homepage.html">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_players_(W%E2%80%93Z)">NBA Players</a>
+				</li>
+		    <li class="nav-item active">
+		      <a class="nav-link" href="Search.html">Search</a>
+		    </li>
+		    <li class="nav-item">
+		      <a class="nav-link" href="#">About Us</a>
+		    </li>
+		  </ul>
+		</nav>
+
+		<form method="get" action="{{ url_for('results') }}">
+			<label for="searchterm">What do you want to search for:</label>
+			<input type="text" name="searchterm" /><br />
+
+			<input type="submit" value="Search" />
+		</form>
+
+		<a href="/my-link/">Hello World</a>
+	</body>
+</html>
