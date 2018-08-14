@@ -171,8 +171,7 @@ def getStats(link):
 		i = 0 
 		for stat in AllStats[stats]:
 			AllStats[stats][i] = AllStats[stats][i].replace("\u2013", "-")
-			print("AllStats[stats][i] = %s" % AllStats[stats][i])
-			print("Stat = %s" % stat)
+			AllStats[stats][i] = AllStats[stats][i].replace("\n", "")
 			i += 1
 	return AllStats
 	
