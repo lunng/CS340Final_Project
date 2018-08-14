@@ -5,13 +5,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	print("Someone is at the home page.")
-	return render_template('Search.html')
-
-# @app.route(404)
-# def page_not_found(error):
-# return render_template('404.html'),404
-
-
+	return render_template('search.html')
 
 @app.route('/my-link/')
 def my_link():
