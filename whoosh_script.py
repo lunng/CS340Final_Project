@@ -3,6 +3,7 @@ import whoosh
 from whoosh.index import create_in
 from whoosh.fields import*
 from whoosh.qparser import QueryParser
+from whoosh.filedb.filestore import FileStorage
 import json
 import os
 
@@ -21,7 +22,8 @@ def createIndex():
 	return ix
 
 def openIndex():
-	ix = index.open_dir("indexdir")
+	storage = FileStorage("indexdir")
+	ix = storage.open_index()
 	return ix
 	
 def addToIndex(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name, ix): 
@@ -40,10 +42,13 @@ def queryIndex(queryType, queryValue, ix):
 	with ix.searcher() as searcher:
 		query = QueryParser(queryType, ix.schema).parse(queryValue)
 		results = searcher.search(query, limit=None)
-	
+		
 		for result in results:
-			print(result)
-
+			print(result["Name"])
+			
+		for result in results:
+			return results[0]["Name"]
+		
 # def indexing(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name):
     # #what we're searching over
 	# schema = Schema(Year=TEXT(stored=True), Team=TEXT(stored=True), GP=TEXT(stored=True),
