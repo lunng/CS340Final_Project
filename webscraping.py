@@ -5,6 +5,7 @@ from lxml import etree, objectify
 from pathlib import Path 
 import requests
 import json
+import collections
 
 header = {
     'User-Agent': 'Gray Lunn',
@@ -60,7 +61,7 @@ def getLinks(wikiURL):
 	
 	myList = soup.find('div', {'class':'toc'})
 	
-	unformatted_links = myList.findAll('a')
+	unformatted_links = myList.find_all('a')
 	
 	links = []
 	for link in unformatted_links:
@@ -74,24 +75,19 @@ def getPlayers(link):
 	
 	soup = BeautifulSoup(rawPage, 'lxml')
 	
-	myList = soup.find('div', {'class':'columns'})
-	print(myList)
+	lists = soup.find_all('div', {'class':'columns'})
 	links = []
 	
-
-	unformatted_links = myList.findAll('a')
-	for link in unformatted_links:
-		links.append(link.get('href'))
-			
+	for myList in lists:
+		unformatted_links = myList.find_all('a')
+		for link in unformatted_links:
+			links.append(link.get('href'))
+	
+	print(links)
 	return links
 	
-def getPlayerName(link):
-	wiki = 'https://en.wikipedia.org'
-	wikiURL = wiki + link
-	rawPage = getPage(wikiURL)
-	
-	soup = BeautifulSoup(rawPage, 'lxml')
-	
+def getPlayerName(soup):
+
 	title = soup.find('h1', {"id": "firstHeading"})
 	print(title.text)
 	
@@ -108,7 +104,7 @@ def getStats(link):
 	
 
 	# finds first sortable table (which is reg season stats table)
-	Tables = soup.findAll("table", table_classes)
+	Tables = soup.find_all("table", table_classes)
 	try:
 		regSeasonTable = Tables[0]
 	except IndexError:
@@ -130,8 +126,8 @@ def getStats(link):
 	PPG = []
 
 
-	for row in regSeasonTable.findAll("tr"):	
-		cells = row.findAll("td")
+	for row in regSeasonTable.find_all("tr"):	
+		cells = row.find_all("td")
 		if len(cells) == 13:
 			Year.append(cells[0].find(text=True))
 			Team.append(cells[1].find(text=True))
@@ -147,7 +143,7 @@ def getStats(link):
 			BPG.append(cells[11].find(text=True))
 			PPG.append(cells[12].find(text=True))
 			
-	#playoffsTable = soup.findAll("table", table_classes)[1]
+	#playoffsTable = soup.find_all("table", table_classes)[1]
 
 	# AllStats = []
 	# AllStats.append(Year)
@@ -182,10 +178,13 @@ def getStats(link):
 	for stats in AllStats:
 		i = 0 
 		for stat in AllStats[stats]:
-			AllStats[stats][i] = AllStats[stats][i].replace("\u2013", "-")
-			AllStats[stats][i] = AllStats[stats][i].replace("\n", "")
+			if isinstance(AllStats[stats][i], str):
+				AllStats[stats][i] = AllStats[stats][i].replace("\u2013", "-")
+				AllStats[stats][i] = AllStats[stats][i].replace("\n", "-")
 			i += 1
-	return AllStats
+
+	return [AllStats, soup]	
+	
 	
 def statsToFile(stats, player, name):
 	name = name.replace("(basketball)", "")
@@ -225,10 +224,15 @@ def main():
 	i = 0
 	#print(stats)
 	for link in links:
-		players = getPlayers(link)
+		players = getPlayers(link) #link
 		for player in players:
-			stats = getStats(player)
-			name = getPlayerName(player)
+			stats_soup = getStats(player)
+			try:
+				stats = stats_soup[0]
+				soup = stats_soup[1]
+			except KeyError:
+				continue
+			name = getPlayerName(soup)
 			statsToFile(stats, player, name)
 			i = i+1
 			

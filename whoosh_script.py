@@ -91,12 +91,19 @@ def method_1(ix):
     #to do for loop for all players the json files need to n
 	for file in json_files:
 		with open("./Players JSONS/" + file, 'r') as f:
-    #with open("./Players JSONS/Kareem_Abdul-Jabbar.json", 'r') as f:
+	# with open("./Players JSONS/Kareem_Abdul-Jabbar.json", 'r') as f:
 			playerstore = json.load(f)
+			for index in playerstore:
+				i = 0
+				for value in playerstore[index]:
+					if not value:
+						playerstore[index][i] = "-"
+					i += 1
 			if "Year" in playerstore:
 				year = ' '.join(playerstore["Year"]) #storing the string
 			else:
 				continue
+			print(playerstore["Name"])
 			# print (playerstore["Team"])
 			team = ' '.join(playerstore["Team"]) #storing the string
 
@@ -134,9 +141,10 @@ def method_1(ix):
 			ppg = ' '.join(playerstore["PPG"]) #storing the string
 			   #passing the string that will be indexed
 			name = ' '.join(playerstore["Name"])
+			
 			writer.add_document(Year= year, Team=team, GP=gp, GS=gs, MPG=mpg, FG=fg,
 			threeP=threep, FT=ft, RPG=rpg, APG=apg, SPG=spg, BPG=bpg, PPG=ppg, Name=name)
-			
+				
 	writer.commit()
 			
 def main():
@@ -144,7 +152,7 @@ def main():
 	ix = createIndex()
 	method_1(ix)
 
-	queryIndex("Name", "Alvan Adams", ix)
+	queryIndex("Name", "Jabbar", ix)
 
 	
 if __name__ == '__main__':

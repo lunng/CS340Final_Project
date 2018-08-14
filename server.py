@@ -1,9 +1,11 @@
 from flask import Flask, render_template, url_for, request
+from jinja2 import TemplateNotFound
 import whoosh_script
 import whoosh
 from whoosh.index import create_in
 from whoosh.fields import*
 from whoosh.qparser import QueryParser
+
 import json
 import os
 
@@ -11,7 +13,11 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-	print("Someone is at the home page.")
+	# print("Someone is at page %s" % pagename)
+	# try:
+		# return render_template(pagename)
+	# except TemplateNotFound:
+		# return render_template('404.html')
 	return render_template('Search.html')
 
 @app.route('/my-link/')
@@ -19,6 +25,16 @@ def my_link():
 	print('I got clicked!')
 	return 'Click.'
 
+@app.route('/homepage.html',  methods=['GET', 'POST'])
+def homepage():
+	print("Accessed homepage")
+	return render_template('homepage.html')
+	
+@app.route('/Search.html',  methods=['GET', 'POST'])
+def search():
+	print("Accessed searchpage")
+	return render_template('Search.html')
+	
 @app.route('/results/', methods=['GET', 'POST'])
 def results():
 	if request.method == 'POST':
@@ -34,6 +50,8 @@ def results():
 	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
 	return render_template('results.html', query=data) #,results=zip(firstName, lastName))
 
+
+	
 def main():
 	app.run(debug=True)
 
