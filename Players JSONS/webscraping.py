@@ -166,6 +166,14 @@ def getStats(link):
 	AllStats['SPG'] = SPG
 	AllStats['BPG'] = BPG
 	AllStats['PPG'] = PPG
+
+	for stats in AllStats:
+		i = 0 
+		for stat in AllStats[stats]:
+			AllStats[stats][i] = AllStats[stats][i].replace("\u2013", "-")
+			print("AllStats[stats][i] = %s" % AllStats[stats][i])
+			print("Stat = %s" % stat)
+			i += 1
 	return AllStats
 	
 def statsToFile(stats, player):
