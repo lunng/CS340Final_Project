@@ -75,7 +75,7 @@ def getPlayers(link):
 	soup = BeautifulSoup(rawPage, 'lxml')
 	
 	myList = soup.find('div', {'class':'columns'})
-	
+	print(myList)
 	links = []
 	
 
@@ -84,6 +84,18 @@ def getPlayers(link):
 		links.append(link.get('href'))
 			
 	return links
+	
+def getPlayerName(link):
+	wiki = 'https://en.wikipedia.org'
+	wikiURL = wiki + link
+	rawPage = getPage(wikiURL)
+	
+	soup = BeautifulSoup(rawPage, 'lxml')
+	
+	title = soup.find('h1', {"id": "firstHeading"})
+	print(title.text)
+	
+	return title.text
 
 # gets career stats for a single player  
 def getStats(link):
@@ -96,7 +108,11 @@ def getStats(link):
 	
 
 	# finds first sortable table (which is reg season stats table)
-	regSeasonTable = soup.findAll("table", table_classes)[0]
+	Tables = soup.findAll("table", table_classes)
+	try:
+		regSeasonTable = Tables[0]
+	except IndexError:
+		return {}
 	
 	# Lists to store stats for each category 
 	Year = []
@@ -147,7 +163,7 @@ def getStats(link):
 	# AllStats.append(SPG)
 	# AllStats.append(BPG)
 	# AllStats.append(PPG)
-	
+		
 	AllStats = {}
 	AllStats['Year'] = Year
 	AllStats['Team'] = Team
@@ -162,13 +178,32 @@ def getStats(link):
 	AllStats['SPG'] = SPG
 	AllStats['BPG'] = BPG
 	AllStats['PPG'] = PPG
+
+	for stats in AllStats:
+		i = 0 
+		for stat in AllStats[stats]:
+			AllStats[stats][i] = AllStats[stats][i].replace("\u2013", "-")
+			AllStats[stats][i] = AllStats[stats][i].replace("\n", "")
+			i += 1
 	return AllStats
 	
-def statsToFile(stats, player):
+def statsToFile(stats, player, name):
+	name = name.replace("(basketball)", "")
+	list_item = []
+	list_item.append(name)
+	stats["Name"] = list_item
 	string = json.dumps(stats)
-	filename = player + ".json"
+	filename = "./Players JSONS/"
+	filename += player + ".json"
 	filename = filename.replace("/wiki/", "")
-	file = open(filename, "w+")
+	filename = filename.replace("/w/index.php?title=", "")
+	filename = filename.replace("_(basketball)&action=edit&redlink=1", "")
+	filename = filename.replace("_(basketball)", "")
+	print(filename)
+	try:
+		file = open(filename, "w+")
+	except FileNotFoundError:
+		return
 	file.write(string)
 	file.close()
 	
@@ -190,14 +225,11 @@ def main():
 	i = 0
 	#print(stats)
 	for link in links:
-		if i >= 10:
-			break
 		players = getPlayers(link)
 		for player in players:
-			if i >= 10:
-				break
 			stats = getStats(player)
-			statsToFile(stats, player)
+			name = getPlayerName(player)
+			statsToFile(stats, player, name)
 			i = i+1
 			
 
