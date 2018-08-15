@@ -12,7 +12,7 @@ def createIndex():
 	schema = Schema(Year=TEXT(stored=True), Team=TEXT(stored=True), GP=TEXT(stored=True),
 	GS=TEXT(stored=True), MPG=TEXT(stored=True), FG=TEXT(stored=True), threeP=TEXT(stored=True),
 	FT=TEXT(stored=True), RPG=TEXT(stored=True),APG=TEXT(stored=True),SPG=TEXT(stored=True),
-	BPG=TEXT(stored=True), PPG=TEXT(stored=True), Name=TEXT(stored=True),)
+	BPG=TEXT(stored=True), PPG=TEXT(stored=True), Name=TEXT(stored=True), Filename=TEXT(stored=True),)
 
     #creates a Storage object to contain the index
 	if not os.path.exists("indexdir"):
@@ -43,11 +43,14 @@ def queryIndex(queryType, queryValue, ix):
 		query = QueryParser(queryType, ix.schema).parse(queryValue)
 		results = searcher.search(query, limit=None)
 		
+		names_list = []
+		
 		for result in results:
-			print(result["Name"])
-			
-		for result in results:
-			return results[0]["Name"]
+			names_list.append(result["Filename"])
+		
+
+		
+		return names_list
 		
 # def indexing(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name):
     # #what we're searching over
@@ -90,7 +93,8 @@ def method_1(ix):
 	json_files = os.listdir("./Players JSONS")
     #to do for loop for all players the json files need to n
 	for file in json_files:
-		with open("./Players JSONS/" + file, 'r') as f:
+		filename = "./Players JSONS/" + file
+		with open(filename, 'r') as f:
 	# with open("./Players JSONS/Kareem_Abdul-Jabbar.json", 'r') as f:
 			playerstore = json.load(f)
 			for index in playerstore:
@@ -143,7 +147,7 @@ def method_1(ix):
 			name = ' '.join(playerstore["Name"])
 			
 			writer.add_document(Year= year, Team=team, GP=gp, GS=gs, MPG=mpg, FG=fg,
-			threeP=threep, FT=ft, RPG=rpg, APG=apg, SPG=spg, BPG=bpg, PPG=ppg, Name=name)
+			threeP=threep, FT=ft, RPG=rpg, APG=apg, SPG=spg, BPG=bpg, PPG=ppg, Name=name, Filename=filename)
 				
 	writer.commit()
 			
