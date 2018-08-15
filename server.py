@@ -55,6 +55,8 @@ def results():
 	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
 	return render_template('results.html', query=data) #,results=zip(firstName, lastName))
 
+	
+
 
 
 def main():
