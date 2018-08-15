@@ -73,6 +73,7 @@
 		  </div>
 		</nav>
 
+<!--
 		<label class="container">Player Name
 		  <input type="checkbox" checked="checked">
 		  <span class="checkmark"></span>
@@ -88,9 +89,18 @@
 		  <span class="checkmark"></span>
 		</label>
 
+-->
+
 		<form method="get" action="{{ url_for('results') }}">
 			<label for="searchterm">What do you want to search for:</label>
 			<input type="text" name="searchterm" /><br />
+
+			<input type="checkbox" checked="checked" name="playerDetail" value="Player">Player Name<br>
+			<span class="checkmark"></span>
+
+			<input type="checkbox" name="playerDetail" value="Team">Team Name<br>
+			<input type="checkbox" name="playerDetail" value="Year">Year<br>
+
 
 			<input type="submit" value="Search" />
 		</form>
