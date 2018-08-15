@@ -38,6 +38,46 @@
       </ul>
     </nav>
 
+		<table>
+			<thead>
+				<tr>
+					<th>Year</th>
+					<th>Team</th>
+					<th>GP</th>
+					<th>GS</th>
+					<th>MPG</th>
+					<th>FG</th>
+					<th>threeP</th>
+					<th>FT</th>
+					<th>RPG</th>
+					<th>APG</th>
+					<th>SPG</th>
+					<th>BPG</th>
+					<th>PPG</th>
+					<th>Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for Year, Team , GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG, Name in results %}
+				<tr>
+					<td>{{Year}}</td>
+					<td>{{Team}}</td>
+					<td>{{GP}}</td>
+					<td>{{GS}}</td>
+					<td>{{MPG}}</td>
+					<td>{{FG}}</td>
+					<td>{{threeP}}</td>
+					<td>{{FT}}</td>
+					<td>{{RPG}}</td>
+					<td>{{APG}}</td>
+					<td>{{SPG}}</td>
+					<td>{{BPG}}</td>
+					<td>{{PPG}}</td>
+					<td>{{Name}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
 
 
