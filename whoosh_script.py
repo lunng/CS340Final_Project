@@ -43,11 +43,14 @@ def queryIndex(queryType, queryValue, ix):
 		query = QueryParser(queryType, ix.schema).parse(queryValue)
 		results = searcher.search(query, limit=None)
 		
+		names_list = []
+		
 		for result in results:
-			print(result["Name"])
-			
-		for result in results:
-			return results[0]["Name"]
+			names_list.append(result["Name"])
+		
+
+		
+		return names_list
 		
 # def indexing(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name):
     # #what we're searching over
