@@ -29,12 +29,17 @@ def my_link():
 def homepage():
 	print("Accessed homepage")
 	return render_template('homepage.html')
-	
+
 @app.route('/Search.html',  methods=['GET', 'POST'])
 def search():
 	print("Accessed searchpage")
 	return render_template('Search.html')
-	
+
+@app.route('/aboutUs.html',  methods=['GET', 'POST'])
+def about():
+	print("Accessed searchpage")
+	return render_template('aboutUs.html')
+
 @app.route('/results/', methods=['GET', 'POST'])
 def results():
 	if request.method == 'POST':
@@ -51,7 +56,7 @@ def results():
 	return render_template('results.html', query=data) #,results=zip(firstName, lastName))
 
 
-	
+
 def main():
 	app.run(debug=True)
 
