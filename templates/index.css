@@ -71,6 +71,20 @@ hr{
   background-color: black;
   color: white;
 }
+#searchContainer{
+  color: White;
+  height: 300px;
+  width: 100%;
+  text-align: center;
+  padding-top: 60px;
+}
+
+#titleForSearch{
+  color: White;
+  text-align: center;
+  padding-top: 100px;
+
+}
 
 footer{
   background-color: #343A40;
