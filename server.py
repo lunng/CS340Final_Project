@@ -90,9 +90,13 @@ def results():
 
 	query = data2.get('searchterm')
 	print("You searched for: " + query)
+
 	ix = whoosh_script.openIndex()
 	
 	searchType = searchButton(data2)
+	print("Search type")
+	print(searchType)
+	data = []
 	for queryType in searchType:
 		data += whoosh_script.queryIndex(queryType, query, ix)
 
