@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href= "index.css">
 
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}">
+		<link rel="stylesheet" href= "{{ url_for('static',filename='main.css') }}">
 		<title>Welcome to the sample!!</title>
 	</head>
 	<!--https://getbootstrap.com/docs/4.0/components/navbar/-->
@@ -100,7 +100,7 @@
 
 		<form id="searchContainer" method="get" action="{{ url_for('results') }}">
 
-			<input type="checkbox" checked="checked" name="playerDetail" value="Player">Player Name<br>
+			<input type="checkbox" checked="checked" name="playerDetail" value="Name">Player Name<br>
 			<span class="checkmark"></span>
 			<input type="checkbox" name="playerDetail" value="Team">Team Name<br>
 			<input type="checkbox" name="playerDetail" value="Year">Year<br>
