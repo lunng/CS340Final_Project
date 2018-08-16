@@ -2,8 +2,10 @@
 import whoosh
 from whoosh.index import create_in
 from whoosh.fields import*
+from whoosh import qparser
 from whoosh.qparser import QueryParser
 from whoosh.filedb.filestore import FileStorage
+from whoosh.qparser import MultifieldParser
 import json
 import os
 
@@ -38,17 +40,18 @@ def addToIndex(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg,
 
 
 	
-def queryIndex(queryType, queryValue, ix):
+def queryIndex(queryTypes, queryValue, ix):
 	with ix.searcher() as searcher:
-		query = QueryParser(queryType, ix.schema).parse(queryValue)
+		query = MultifieldParser(queryTypes, ix.schema, group=qparser.OrGroup).parse(queryValue)
 		results = searcher.search(query, limit=None)
 		
-		names_list = []
-		
+		names_list = {}
+		names_list["filenames"] = []
+		names_list["playernames"] = []
 		for result in results:
-			names_list.append(result["Filename"])
+			names_list["filenames"].append(result["Filename"])
+			names_list["playernames"].append(result["Name"])
 		
-
 		
 		return names_list
 		

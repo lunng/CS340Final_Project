@@ -91,24 +91,26 @@ def results():
 	query = data2.get('searchterm')
 	print("You searched for: " + query)
 
-	nstr = re.sub(r'[?|$|.|!]',r'',query)
+	nstr = re.sub(r'[?|$|.|!|#|@|~]',r'',query)
+	nestr = re.sub(r'[^a-zA-Z0-9 ]',r'',nstr)
+	print("clean query : " + nestr)
 	print("clean query : " + nstr)
 	ix = whoosh_script.openIndex()
 	
 	searchType = searchButton(data2)
 	print("Search type")
 	print(searchType)
-	data = []
-	for queryType in searchType:
-		data += whoosh_script.queryIndex(queryType, query, ix)
+	data = {}
+
+	data = whoosh_script.queryIndex(searchType, query, ix)
 
 
 
 	# firstName = ['Ben','Sarah', 'Xandar', 'Ellewyn']
 	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
 	#this search button gives us the correct returns for list
-	
-	return render_template('results.html', query=data, results=data) #,results=zip(firstName, lastName))
+
+	return render_template('results.html', results=zip(data["filenames"], data["playernames"])) #,results=zip(firstName, lastName))
 
 @app.route('/', methods=['GET', 'POST'])
 def player_values(JSON_path, graph_paths):
@@ -154,7 +156,7 @@ def player_pages():
 	else:
 		#original variable name is data
 		data = request.args
-		
+	
 	JSON_path = data.get('Name')
 	graph_paths = []
 	Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG, Name = player_values(JSON_path, graph_paths)

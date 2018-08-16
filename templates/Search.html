@@ -10,7 +10,7 @@
 		<!-- CSS Bootstrap style sheet -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}">
+		<!-- <link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}"> -->
 		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/index.css') }}">
 		<title>Welcome to the sample!!</title>
 	</head>
@@ -65,10 +65,6 @@
 					</li>
 
 		    </ul>
-		    <form class="form-inline my-2 my-lg-0">
-		      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-		      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-		    </form>
 		  </div>
 		</nav>
 
@@ -99,19 +95,20 @@
 
 		<form id="searchContainer" method="get" action="{{ url_for('results') }}">
 
+		
+			<label for="searchterm"></label>
+			<input type="submit" value="Search" />
+			<input type="text" name="searchterm" />
 			<input type="checkbox" checked="checked" name="playerDetail" value="Name">Player Name<br>
 			<span class="checkmark"></span>
 			<input type="checkbox" name="playerDetail" value="Team">Team Name<br>
 			<input type="checkbox" name="playerDetail" value="Year">Year<br>
 
-			<label for="searchterm"></label>
-			<input type="submit" value="Search" />
-			<input type="text" name="searchterm" />
+			
 
 
 
 		</form>
 
-		<a href="/my-link/">Hello World</a>
 	</body>
 </html>

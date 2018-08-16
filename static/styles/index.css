@@ -1,9 +1,14 @@
 body{
-  width: auto;
-  height: auto;
-  background-color: black;
-  margin: auto;
-  padding: inherit;
+	width: auto;
+	height: auto;
+	color: white;
+	background-color: #4f737a;
+	margin: auto;
+	padding: inherit;
+}
+
+h1{
+	margin-left: 40%;
 }
 
 #banner{
@@ -84,6 +89,37 @@ hr{
   text-align: center;
   padding-top: 100px;
 
+}
+
+.charts{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.player_chart{
+	display: flex;
+	width: 26%;
+	padding: 10px;
+	justify-content: space-around;
+}
+
+table{
+	width: 50%;
+	position: center;
+	margin-left: 12%;
+}
+
+results{
+	margin-left: 20%;
+}
+
+li{
+	display: block;
+}
+
+th, td {
+    border-bottom: 1px solid white;
 }
 
 footer{
