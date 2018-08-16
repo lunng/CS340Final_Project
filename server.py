@@ -106,15 +106,26 @@ def results():
 	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
 	#this search button gives us the correct returns for list
 	
-	return render_template('results.html', query=data) #,results=zip(firstName, lastName))
+	return render_template('results.html', query=data, results=data) #,results=zip(firstName, lastName))
 
 @app.route('/', methods=['GET', 'POST'])
-def player_values():
+def player_values(JSON_path, graph_paths):
 		#for loop for the array of returned results
 		# for file in json_files:
 		# 	with open("./Players JSONS/" + file, 'r') as f:
-		with open("./Players JSONS/Austin_Carr.json", 'r') as f:
+		with open(JSON_path, 'r') as f:
 			player_page = json.load(f)
+			for title in player_page:
+				if title == "Year" or title == "Team" or title == "Name":
+					continue
+				pathname = "chartsdir/"
+				try:
+					pathname += player_page["Name"][0]
+					pathname += title
+					pathname += ".png"
+				except:
+					continue
+				graph_paths.append(pathname)		
 			#getting the values from the json pages
 			year = player_page["Year"]#storing the string
 			team = player_page["Team"] #storing the list of stats
@@ -132,11 +143,22 @@ def player_values():
 			name = player_page["Name"][0] #storing the list of stats
 		return year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name
 #individual player page
-@app.route('/player_pages', methods=['GET', 'POST'])
+
+@app.route('/player_pages/', methods=['GET', 'POST'])
 def player_pages():
-		#removed passing name
-		 Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG, Name = player_values()
-		 return render_template('player_pages.html', results=zip(Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG), name=Name)
+	if request.method == 'POST':
+		#original variable name is data
+		data = request.form
+	else:
+		#original variable name is data
+		data = request.args
+		
+	JSON_path = data.get('Name')
+	graph_paths = []
+	Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG, Name = player_values(JSON_path, graph_paths)
+	print(graph_paths)
+	return render_template('player_pages.html', results=zip(Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG), name=Name, paths=graph_paths)
+	
 def main():
 	app.run(debug=True)
 

@@ -10,6 +10,8 @@
 		<!-- CSS Bootstrap style sheet -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 		<link rel="stylesheet" href= "main.css">
+		<link rel="stylesheet" href= "index.css">
+		
 
 	</head>
 
@@ -24,16 +26,16 @@
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <ul class="navbar-nav">
     		<li class="nav-item">
-    			<a class="nav-link" href="#">Home</a>
+    			<a class="nav-link" href="../homepage.html">Home</a>
     		</li>
     		<li class="nav-item active">
-    			<a class="nav-link" href="#">Players Pages</a>
+    			<a class="nav-link" href="https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_players_(W%E2%80%93Z)">NBA Players</a>
     		</li>
         <li class="nav-item">
           <a class="nav-link" href="#">Search</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About Us</a>
+          <a class="nav-link" href="../aboutUs.html">About Us</a>
         </li>
       </ul>
     </nav>
@@ -57,7 +59,7 @@
 
 		<div id="boxes4">
 			<input type="checkbox" name="traits" value="SPG">Steals Per Game<br>
-			<input type="checkbox" name="traits" value="ThreeP">3 Pointers<br>
+			<input type="checkbox" name="traits" value="threeP">3 Pointers<br>
 		</div>
 
 
@@ -103,6 +105,9 @@
 			</tbody>
 		</table>
 
+		{% for path in paths %}
+		<img src="{{ url_for('static', filename= path ) }}" alt={{ path }}>
+		{% endfor %}
 
 
 	<!-- Required -->
