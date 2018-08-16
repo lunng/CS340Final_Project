@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request
 from jinja2 import TemplateNotFound
 import whoosh_script
 import whoosh
+import plotly
 from whoosh.index import create_in
 from whoosh.fields import*
 from whoosh.qparser import QueryParser
@@ -33,7 +34,7 @@ def index():
 			#about the playerDetail checkboxes
 def searchButton(data):
 	playerDetail = data.getlist('playerDetail')
-	print (playerDetail)
+	return playerDetail
 	#create for loop to loop through the list, then ask conditions like if playerDetail == element in array: do something
 
 
@@ -71,11 +72,13 @@ def results():
 	query = data2.get('searchterm')
 	print("You searched for: " + query)
 	ix = whoosh_script.openIndex()
-	data = whoosh_script.queryIndex("Name", query, ix)
+	searchType = searchButton(data2)
+	for queryType in searchType:
+		data += whoosh_script.queryIndex(queryType, query, ix)
 	# firstName = ['Ben','Sarah', 'Xandar', 'Ellewyn']
 	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
 	#this search button gives us the correct returns for list
-	searchButton(data2)
+	
 	return render_template('results.html', query=data) #,results=zip(firstName, lastName))
 
 	
