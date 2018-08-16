@@ -88,10 +88,10 @@
 
 -->
 
-		<div id="titleForSearch">
+		<!-- <div id="titleForSearch"> -->
 			<h1>Search Page</h1>
-			<img src="https://static.getjar.com/icon-50x50/60/811759_thm.png"> Draft Graphs!
-		</div>
+			<!-- <img src="https://static.getjar.com/icon-50x50/60/811759_thm.png"> Draft Graphs! -->
+		<!-- </div> -->
 
 		<form id="searchContainer" method="get" action="{{ url_for('results') }}">
 
@@ -99,10 +99,12 @@
 			<label for="searchterm"></label>
 			<input type="submit" value="Search" />
 			<input type="text" name="searchterm" />
-			<input type="checkbox" checked="checked" name="playerDetail" value="Name">Player Name<br>
-			<span class="checkmark"></span>
-			<input type="checkbox" name="playerDetail" value="Team">Team Name<br>
-			<input type="checkbox" name="playerDetail" value="Year">Year<br>
+			<div class="checkboxes">
+				<input class="checkbox" type="checkbox" checked="checked" name="playerDetail" value="Name">Player Name<br>
+					<span class="checkmark"></span>
+				<input class="checkbox" type="checkbox" name="playerDetail" value="Team">Team Name<br>
+				<input class="checkbox" type="checkbox" name="playerDetail" value="Year">Year<br>
+			</div>
 
 			
 

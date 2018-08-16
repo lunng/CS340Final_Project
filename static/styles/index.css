@@ -91,6 +91,11 @@ hr{
 
 }
 
+
+.checkbox{
+	display: inline-block;
+}
+
 .charts{
 	display: flex;
 	justify-content: center;
