@@ -53,7 +53,26 @@ def homepage():
 @app.route('/Search.html',  methods=['GET', 'POST'])
 def search():
 	print("Accessed searchpage")
+	if request.method == "POST":
+		return request.form.get('Name')
 	return render_template('Search.html')
+
+#checkbox
+# @app.route('/', methods=['GET', 'POST'])
+# def checkbox():
+# 	# if request.method == "POST":
+# 	# 	return request.form.get('Name')
+#
+# 	 if request.form.getlist('Name'):
+# 	 	print ("something!")
+# 	check = False
+#
+#
+# 	if request.form.get('Year'):
+# 		check = True
+# 		print("name check box was checked")
+# 		print (check)
+
 
 @app.route('/aboutUs.html',  methods=['GET', 'POST'])
 def about():
@@ -72,19 +91,48 @@ def results():
 	query = data2.get('searchterm')
 	print("You searched for: " + query)
 	ix = whoosh_script.openIndex()
+	
 	searchType = searchButton(data2)
 	for queryType in searchType:
 		data += whoosh_script.queryIndex(queryType, query, ix)
+
+
+
 	# firstName = ['Ben','Sarah', 'Xandar', 'Ellewyn']
 	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
 	#this search button gives us the correct returns for list
 	
 	return render_template('results.html', query=data) #,results=zip(firstName, lastName))
 
-	
-
-
-
+@app.route('/', methods=['GET', 'POST'])
+def player_values():
+		#for loop for the array of returned results
+		# for file in json_files:
+		# 	with open("./Players JSONS/" + file, 'r') as f:
+		with open("./Players JSONS/Austin_Carr.json", 'r') as f:
+			player_page = json.load(f)
+			#getting the values from the json pages
+			year = player_page["Year"]#storing the string
+			team = player_page["Team"] #storing the list of stats
+			gp = player_page["GP"] #storing the list of stats
+			gs = player_page["GS"] #storing the list of stats
+			mpg = player_page["MPG"] #storing the list of stats
+			fg = player_page["FG"] #storing the list of stats
+			threep = player_page["threeP"] #storing the list of stats
+			ft = player_page["FT"] #storing the list of stats
+			rpg = player_page["RPG"] ##storing the list of stats
+			apg = player_page["APG"]#storing the list of stats
+			spg = player_page["SPG"] #storing the list of stats
+			bpg = player_page["BPG"] #storing the list of stats
+			ppg = player_page["PPG"] #storing the list of stats
+			name = player_page["Name"][0] #storing the list of stats
+		return year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name
+#individual player page
+@app.route('/player_pages', methods=['GET', 'POST'])
+def player_pages():
+		#removed passing name
+		 Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG, Name = player_values()
+		 return render_template('player_pages.html', results=zip(Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG), name=Name)
 def main():
 	app.run(debug=True)
 

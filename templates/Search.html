@@ -74,35 +74,43 @@
 		</nav>
 
 <!--
+>>>>>>> cd49e32c5bfd1b38289e3c851d8241c7fc95a5f6
 		<label class="container">Player Name
-		  <input type="checkbox" checked="checked">
+		  <input type="checkbox" name="Name">
 		  <span class="checkmark"></span>
 		</label>
 
 		<label class="container">Team
-		  <input type="checkbox">
+		  <input type="checkbox" name="Team">
 		  <span class="checkmark"></span>
 		</label>
 
 		<label class="container">Year
-		  <input type="checkbox">
+		  <input type="checkbox" name="Year">
 		  <span class="checkmark"></span>
 		</label>
+	</form>
 
 -->
 
-		<form method="get" action="{{ url_for('results') }}">
-			<label for="searchterm">What do you want to search for:</label>
-			<input type="text" name="searchterm" /><br />
+		<div id="titleForSearch">
+			<h1>Search Page</h1>
+			<img src="https://static.getjar.com/icon-50x50/60/811759_thm.png"> Draft Graphs!
+		</div>
+
+		<form id="searchContainer" method="get" action="{{ url_for('results') }}">
 
 			<input type="checkbox" checked="checked" name="playerDetail" value="Player">Player Name<br>
 			<span class="checkmark"></span>
-
 			<input type="checkbox" name="playerDetail" value="Team">Team Name<br>
 			<input type="checkbox" name="playerDetail" value="Year">Year<br>
 
-
+			<label for="searchterm"></label>
 			<input type="submit" value="Search" />
+			<input type="text" name="searchterm" />
+
+
+
 		</form>
 
 		<a href="/my-link/">Hello World</a>
