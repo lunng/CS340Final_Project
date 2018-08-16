@@ -6,7 +6,7 @@ import plotly
 from whoosh.index import create_in
 from whoosh.fields import*
 from whoosh.qparser import QueryParser
-
+import re
 import json
 import os
 
@@ -91,6 +91,8 @@ def results():
 	query = data2.get('searchterm')
 	print("You searched for: " + query)
 
+	nstr = re.sub(r'[?|$|.|!]',r'',query)
+	print("clean query : " + nstr)
 	ix = whoosh_script.openIndex()
 	
 	searchType = searchButton(data2)
