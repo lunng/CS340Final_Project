@@ -2,7 +2,6 @@ from flask import Flask, render_template, url_for, request
 from jinja2 import TemplateNotFound
 import whoosh_script
 import whoosh
-import plotly
 from whoosh.index import create_in
 from whoosh.fields import*
 from whoosh.qparser import QueryParser
