@@ -5,12 +5,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<!-- CSS Bootstrap style sheet -->
-		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}">
-		<link rel="stylesheet" href= "index.css">
+		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/index.css') }}">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 		<meta charset="UTF-8">
-		<title>Welcome to the sample!!</title>
+		<title>About Us</title>
 	</head>
 
 	<body>
@@ -48,17 +47,24 @@
 		  </div>
 		</nav>
 
+
+
 		<div id="banner">
 			<img src="https://i.imgur.com/z92hRh6.png">
-		</div>
-		<div id="container1">
-			<h1>About Us</h1>
-		</div>
-		<div id="leftcontainer">
-			<p> Hello! We are the Corvo databasers. Our goal with this project was to create a comprehensive comparison of past and present NBA players. This database was scraped using beautifulsoup and wikipedia. The data could be cleaner, but we did our best to show a graphical representation of important career statistics for every player that is or was in the NBA. We hope you enjoy!</p>
+			<div class="container jumbotron" style="background-color: black; color: white; margin: 50px;">
+            <div>
+                <div class="text-center"></div>
+                <h1 class="display-4">About Us</h1>
+                <br>
+                <p class="text-center">
+                Hello! We are the Corvo databasers. Our goal with this project was to create a comprehensive comparison of past and present NBA players. This database was scraped using beautifulsoup and wikipedia. The data could be cleaner, but we did our best to show a graphical representation of important career statistics for every player that is or was in the NBA. We hope you enjoy!
+                </p>
+            </div>
+        	</div>
 		</div>
 
-		
+
+
 
 
 	</body>

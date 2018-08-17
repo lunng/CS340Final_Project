@@ -11,6 +11,17 @@ h1{
 	margin-left: 40%;
 }
 
+h2{
+	color:white;
+	text-align: center;
+
+}
+
+.search_results{
+	text-align: center;
+	color:white;
+}
+
 #banner{
   display: block;
   margin: 0 auto;
