@@ -16,11 +16,6 @@
 
 	<body>
 
-<!--
-		<header>
-			<h1>Draft Graph</h1>
-		</header>
--->
 		<!-- https://www.w3schools.com/bootstrap4/bootstrap_navbar.asp -->
 		<nav class="navbar navbar-dark navbar-expand-lg bg-dark">
 			<div class="item">
@@ -59,19 +54,50 @@
 
 
 
-		<h2 class="results" > Search Results </h2>
-			<ul class="search_results">
+		<h2 class="results" style="border-style: solid; 
+								border-width: 1px 1px 4px;
+							    color: #FFFFFF;
+							    padding: 35px;	   
+							    font-weight: 500;	
+							    font-size: 60px;
+							    border-color: #4d8cd6;
+								background-color: #4d8cd6;"> Search Results </h2>
+			<ul class="search_results" >
 				{% for location,player_name  in results %}
 				<li>
-					<a href="../player_pages/?Name={{location}}"> {{ player_name}} </a>
+					<br>
+					<a href="../player_pages/?Name={{location}}"  
+								style="border-style: solid;
+							    border-width: 1px 1px 4px;
+							    color: #FFFFFF;	   
+							    border-radius: 50px;
+							    font-weight: 500;	
+							    padding: 10px 80px 10px;
+							    font-size: 50px;
+							    border-color: #102033;
+								background-color: #2e4866;"> {{ player_name}} </a>
 				</li>
 				{% endfor %}
 			</ul>
 
 <!-- RETURN BUTTON-->
-		<form method="post" action="{{ url_for('index') }}">
-			<input type="submit" value="Return" />
+	<div style="text-align: left;">
+		<br>
+		<form method="post"  action="{{ url_for('index') }}">
+			<input type="submit" style="border-style: solid;
+							    border-width: 1px 1px 4px;
+							    color: #FFFFFF;	   
+							    border-radius: 30px;
+							    font-weight: 500;	
+							    padding: 10px 50px 10px;
+							    font-size: 30px;
+							    border-color: #2e4866;
+								background-color: #4d8cd6;"
+								value="Return" />
 		</form>
+	</div>
+
+
 
 		{% for pages in page_count %}
 			<a href="{{ url_for('results', page_number = pages)}}">{{pages}}</a>

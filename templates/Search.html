@@ -12,28 +12,10 @@
 		<meta charset="UTF-8">
 		<!-- <link rel="stylesheet" href= "{{ url_for('static',filename='styles/main.css') }}"> -->
 		<link rel="stylesheet" href= "{{ url_for('static',filename='styles/index.css') }}">
-		<title>Welcome to the sample!!</title>
+		<title>Search Page</title>
 	</head>
-	<!--https://getbootstrap.com/docs/4.0/components/navbar/-->
+
 	<body>
-		<!--
-		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		  <ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link" href="homepage.html">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="https://en.wikipedia.org/wiki/List_of_National_Basketball_Association_players_(W%E2%80%93Z)">NBA Players</a>
-				</li>
-		    <li class="nav-item active">
-		      <a class="nav-link" href="Search.html">Search</a>
-		    </li>
-		    <li class="nav-item">
-		      <a class="nav-link" href="#">About Us</a>
-		    </li>
-		  </ul>
-		</nav>
-		-->
 
 		<nav class="navbar navbar-dark navbar-expand-lg bg-dark">
 			<div class="item">
@@ -44,10 +26,11 @@
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
 
+
 		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 		    <ul class="navbar-nav mr-auto">
 
-					<li class="nav-item">
+					<li class="nav-item" style="">
 						<a class="nav-link" href="homepage.html">Home</a>
 					</li>
 
@@ -68,49 +51,41 @@
 		  </div>
 		</nav>
 
-<!--
->>>>>>> cd49e32c5bfd1b38289e3c851d8241c7fc95a5f6
-		<label class="container">Player Name
-		  <input type="checkbox" name="Name">
-		  <span class="checkmark"></span>
-		</label>
 
-		<label class="container">Team
-		  <input type="checkbox" name="Team">
-		  <span class="checkmark"></span>
-		</label>
 
-		<label class="container">Year
-		  <input type="checkbox" name="Year">
-		  <span class="checkmark"></span>
-		</label>
-	</form>
-
--->
-
-		<!-- <div id="titleForSearch"> -->
-			<h1>Search Page</h1>
-			<!-- <img src="https://static.getjar.com/icon-50x50/60/811759_thm.png"> Draft Graphs! -->
-		<!-- </div> -->
 
 		<form id="searchContainer" method="get" action="{{ url_for('results') }}">
+			<label for="searchterm" ></label>
+			<input type="text" name="searchterm" style="padding: 10px;
+														font-weight: 700;
+														font-size: 25px;" />
+			<input type="submit" value="Search" style="border-style: solid;
+							    border-width: 1px 1px 4px;
+							    color: #FFFFFF;	   
+							    border-radius: 20px;
+							    text-align: center;
+							    font-weight: 700;	
+							    padding: 1px 30px 10px;
+							    font-size: 40px;
+							    border-color: #3AC162;
+								background-color: #5FCF80;"/>
+			<div style="float: left;
+						position: relative;
+    					left: 45%;">
+    					<br>
+    					<br>
+    					<br>
 
-		
-			<label for="searchterm"></label>
-			<input type="submit" value="Search" />
-			<input type="text" name="searchterm" />
-			<div class="checkboxes">
-				<input class="checkbox" type="checkbox" checked="checked" name="playerDetail" value="Name">Player Name<br>
-					<span class="checkmark"></span>
-				<input class="checkbox" type="checkbox" name="playerDetail" value="Team">Team Name<br>
-				<input class="checkbox" type="checkbox" name="playerDetail" value="Year">Year<br>
+			<div class="checkboxes" style="text-align: left;
+											font-size: 40px;">
+				<input class="checkbox" type="checkbox"  checked="checked" name="playerDetail" value="Name"> Player Name<br>
+					<span class="checkmark" ></span>
+				<input class="checkbox" type="checkbox" name="playerDetail" value="Team"> Team Name<br>
+				<input class="checkbox" type="checkbox" name="playerDetail" value="Year"> Year<br>
 			</div>
-
-			
-
-
-
+			<div>
 		</form>
+	</div>
 
 	</body>
 </html>
