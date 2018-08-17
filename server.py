@@ -1,3 +1,8 @@
+#############################################################################
+#
+# CS 340 intro to Databases
+# Summer 2018
+#############################################################################
 from flask import Flask, render_template, url_for, request
 from jinja2 import TemplateNotFound
 import whoosh_script
@@ -30,9 +35,10 @@ def searchButton(data):
 		playerDetail_cache = data.getlist('playerDetail')
 	else:
 		playerDetail = playerDetail_cache
-		
+
 	return playerDetail
-	#create for loop to loop through the list, then ask conditions like if playerDetail == element in array: do something
+	#create for loop to loop through the list,
+	#then ask conditions like if playerDetail == element in array: do something
 
 @app.route('/my-link/')
 def my_link():
@@ -43,7 +49,8 @@ def my_link():
 def homepage():
 	print("Accessed homepage")
 	return render_template('homepage.html')
-
+#############################################################################
+#############################################################################
 @app.route('/Search.html',  methods=['GET', 'POST'])
 def search():
 	print("Accessed searchpage")
@@ -55,7 +62,8 @@ def search():
 def about():
 	print("Accessed searchpage")
 	return render_template('aboutUs.html')
-
+#############################################################################
+#############################################################################
 @app.route('/results/', methods=['GET', 'POST'])
 def results():
 	if request.method == 'POST':
@@ -96,7 +104,8 @@ def results():
 
 
 	return render_template('results.html', results=zip(page_data["filenames"], page_data["playernames"]) , page_count = page_count) #,results=zip(firstName, lastName))
-
+#############################################################################
+#############################################################################
 @app.route('/', methods=['GET', 'POST'])
 def player_values(JSON_path, graph_paths):
 		#for loop for the array of returned results
@@ -132,7 +141,8 @@ def player_values(JSON_path, graph_paths):
 			name = player_page["Name"][0] #storing the list of stats
 		return year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name
 #individual player page
-
+#############################################################################
+#############################################################################
 @app.route('/player_pages/', methods=['GET', 'POST'])
 def player_pages():
 	if request.method == 'POST':
