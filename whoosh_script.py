@@ -19,7 +19,7 @@ def createIndex():
     #creates a Storage object to contain the index
 	if not os.path.exists("indexdir"):
 		os.mkdir("indexdir")
-		
+
 	ix = create_in("indexdir", schema)
 	return ix
 
@@ -27,34 +27,48 @@ def openIndex():
 	storage = FileStorage("indexdir")
 	ix = storage.open_index()
 	return ix
-	
-def addToIndex(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name, ix): 
+
+def addToIndex(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name, ix):
 
 	writer = ix.writer()
 	writer.add_document(Year= year, Team=team, GP=gp, GS=gs, MPG=mpg, FG=fg,
 	threeP=threep, FT=ft, RPG=rpg, APG=apg, SPG=spg, BPG=bpg, PPG=ppg, Name=name)
 	writer.commit()
-	
+
     # writer.add_document(Year= year, Team=team, GP=gp, GS=gs, MPG=mpg, FG=fg,
     # threeP=threep, FT=ft, RPG=rpg, APG=apg, SPG=spg, BPG=bpg, PPG=ppg)
 
 
+
+def queryIndex(queryTypes, queryValue, ix, page_num=1):
+	page_num = int(page_num)
 	
-def queryIndex(queryTypes, queryValue, ix):
 	with ix.searcher() as searcher:
 		query = MultifieldParser(queryTypes, ix.schema, group=qparser.OrGroup).parse(queryValue)
 		results = searcher.search(query, limit=None)
-		
+		counted_results = searcher.search_page(query, page_num)	# first time calling page num is 1
+		print('tedt:' + str(counted_results[0]) + str(page_num))
+		#length of results
+		num = len(results)
+		num_pages = int(num / 10)	#because default is floating point
+
 		names_list = {}
 		names_list["filenames"] = []
 		names_list["playernames"] = []
 		for result in results:
 			names_list["filenames"].append(result["Filename"])
 			names_list["playernames"].append(result["Name"])
-		
-		
-		return names_list
-		
+
+		counted_names_list = {}
+		counted_names_list["filenames"] = []
+		counted_names_list["playernames"] = []
+
+		for result in counted_results:
+			counted_names_list["filenames"].append(result["Filename"])
+			counted_names_list["playernames"].append(result["Name"])
+
+		return names_list, counted_names_list, num_pages
+
 # def indexing(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name):
     # #what we're searching over
 	# schema = Schema(Year=TEXT(stored=True), Team=TEXT(stored=True), GP=TEXT(stored=True),
@@ -148,12 +162,12 @@ def method_1(ix):
 			ppg = ' '.join(playerstore["PPG"]) #storing the string
 			   #passing the string that will be indexed
 			name = ' '.join(playerstore["Name"])
-			
+
 			writer.add_document(Year= year, Team=team, GP=gp, GS=gs, MPG=mpg, FG=fg,
 			threeP=threep, FT=ft, RPG=rpg, APG=apg, SPG=spg, BPG=bpg, PPG=ppg, Name=name, Filename=filename)
-				
+
 	writer.commit()
-			
+
 def main():
     #indexing()
 	ix = createIndex()
@@ -161,6 +175,6 @@ def main():
 
 	queryIndex("Name", "Jabbar", ix)
 
-	
+
 if __name__ == '__main__':
     main()

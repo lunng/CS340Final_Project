@@ -2,7 +2,6 @@ from flask import Flask, render_template, url_for, request
 from jinja2 import TemplateNotFound
 import whoosh_script
 import whoosh
-import plotly
 from whoosh.index import create_in
 from whoosh.fields import*
 from whoosh.qparser import QueryParser
@@ -11,6 +10,8 @@ import json
 import os
 
 app = Flask(__name__)
+cache_query = None
+playerDetail_cache = None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -21,24 +22,17 @@ def index():
 		# return render_template('404.html')
 	return render_template('Search.html')
 
-	#checkbox
-	# @app.route('/', methods=['GET', 'POST'])
-	# if request.method == "POST":
-	# return request.form.get('Name')
-
-	#def checkbox():
-	#	if request.form.getlist('Name'):
-	#		print ("something!")
-	#		check = False
-
-			#about the playerDetail checkboxes
 def searchButton(data):
+	global playerDetail_cache
 	playerDetail = data.getlist('playerDetail')
+	if 'playerDetail' in data:
+		playerDetail = data.getlist('playerDetail')
+		playerDetail_cache = data.getlist('playerDetail')
+	else:
+		playerDetail = playerDetail_cache
+		
 	return playerDetail
 	#create for loop to loop through the list, then ask conditions like if playerDetail == element in array: do something
-
-
-
 
 @app.route('/my-link/')
 def my_link():
@@ -57,23 +51,6 @@ def search():
 		return request.form.get('Name')
 	return render_template('Search.html')
 
-#checkbox
-# @app.route('/', methods=['GET', 'POST'])
-# def checkbox():
-# 	# if request.method == "POST":
-# 	# 	return request.form.get('Name')
-#
-# 	 if request.form.getlist('Name'):
-# 	 	print ("something!")
-# 	check = False
-#
-#
-# 	if request.form.get('Year'):
-# 		check = True
-# 		print("name check box was checked")
-# 		print (check)
-
-
 @app.route('/aboutUs.html',  methods=['GET', 'POST'])
 def about():
 	print("Accessed searchpage")
@@ -89,6 +66,18 @@ def results():
 		data2 = request.args
 
 	query = data2.get('searchterm')
+	global cache_query
+	if 'searchterm' in data2:
+		query = data2.get('searchterm')
+		cache_query = data2.get('searchterm')
+	else:
+		query = cache_query
+
+	if 'page_number' in data2:
+		query2 = data2.get('page_number')
+	else:
+		query2 = 1
+
 	print("You searched for: " + query)
 
 	nstr = re.sub(r'[?|$|.|!|#|@|~]',r'',query)
@@ -96,21 +85,17 @@ def results():
 	print("clean query : " + nestr)
 	print("clean query : " + nstr)
 	ix = whoosh_script.openIndex()
-	
+
 	searchType = searchButton(data2)
 	print("Search type")
 	print(searchType)
 	data = {}
 
-	data = whoosh_script.queryIndex(searchType, query, ix)
+	data,page_data, page_count = whoosh_script.queryIndex(searchType, query, ix, query2)
+	page_count = list(range(1,page_count+1))
 
 
-
-	# firstName = ['Ben','Sarah', 'Xandar', 'Ellewyn']
-	# lastName = ['McCamish', 'G', 'Quazar', 'Sabbeth']
-	#this search button gives us the correct returns for list
-
-	return render_template('results.html', results=zip(data["filenames"], data["playernames"])) #,results=zip(firstName, lastName))
+	return render_template('results.html', results=zip(page_data["filenames"], page_data["playernames"]) , page_count = page_count) #,results=zip(firstName, lastName))
 
 @app.route('/', methods=['GET', 'POST'])
 def player_values(JSON_path, graph_paths):
@@ -129,7 +114,7 @@ def player_values(JSON_path, graph_paths):
 					pathname += ".png"
 				except:
 					continue
-				graph_paths.append(pathname)		
+				graph_paths.append(pathname)
 			#getting the values from the json pages
 			year = player_page["Year"]#storing the string
 			team = player_page["Team"] #storing the list of stats
@@ -156,13 +141,13 @@ def player_pages():
 	else:
 		#original variable name is data
 		data = request.args
-	
+
 	JSON_path = data.get('Name')
 	graph_paths = []
 	Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG, Name = player_values(JSON_path, graph_paths)
 	print(graph_paths)
 	return render_template('player_pages.html', results=zip(Year, Team, GP, GS, MPG, FG, threeP, FT, RPG, APG, SPG, BPG, PPG), name=Name, paths=graph_paths)
-	
+
 def main():
 	app.run(debug=True)
 
