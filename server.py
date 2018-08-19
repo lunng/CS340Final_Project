@@ -72,6 +72,7 @@ def results():
 	else:
 		#original variable name is data
 		data2 = request.args
+	
 
 	query = data2.get('searchterm')
 	global cache_query
@@ -85,22 +86,23 @@ def results():
 		query2 = data2.get('page_number')
 	else:
 		query2 = 1
-
-	print("You searched for: " + query)
-
+		
+	#clean the query
 	nstr = re.sub(r'[?|$|.|!|#|@|~]',r'',query)
 	nestr = re.sub(r'[^a-zA-Z0-9 ]',r'',nstr)
 	
+	#error check debug
 	print("clean query : " + nestr)
 	print("query : " + query)
 	ix = whoosh_script.openIndex()
-
+		
+	#get the info from the checkboxes
 	searchType = searchButton(data2)
 	print("Search type")
 	print(searchType)
-	data = {}
 
-	data, page_data, page_count = whoosh_script.queryIndex(searchType, query, ix, query2)
+	#query for data
+	page_data, page_count = whoosh_script.queryIndex(searchType, query, ix, query2)
 	page_count = list(range(1,page_count+1))
 
 

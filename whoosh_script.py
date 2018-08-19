@@ -44,36 +44,32 @@ def queryIndex(queryTypes, queryValue, ix, page_num=1):
 	page_num = int(page_num)
 	
 	with ix.searcher() as searcher:
+		#example code from whoosh docs
 		query = MultifieldParser(queryTypes, ix.schema, group=qparser.OrGroup).parse(queryValue)
 		results = searcher.search(query, limit=None)
 		counted_results = searcher.search_page(query, page_num)	# first time calling page num is 1
 		
-		names_list = {}
-		names_list["filenames"] = []
-		names_list["playernames"] = []
+		#contains fields for HTML reading
+		counted_names_list = {}
+		counted_names_list["filenames"] = []
+		counted_names_list["playernames"] = []
 		
+		#break if nothing is returned from teh search 
 		if results.is_empty():
-			return {}, names_list, 0
+			return counted_names_list, 0
 			
 		print('test:' + str(counted_results[0]) + str(page_num))
 		#length of results
 		num = len(results)
 		num_pages = int(num / 10)	#because default is floating point
 
-		
-		for result in results:
-			names_list["filenames"].append(result["Filename"])
-			names_list["playernames"].append(result["Name"])
-
-		counted_names_list = {}
-		counted_names_list["filenames"] = []
-		counted_names_list["playernames"] = []
+		#list will be sent to template for display		
 
 		for result in counted_results:
 			counted_names_list["filenames"].append(result["Filename"])
 			counted_names_list["playernames"].append(result["Name"])
 
-		return names_list, counted_names_list, num_pages
+		return counted_names_list, num_pages
 
 # def indexing(year, team, gp, gs, mpg, fg, threep, ft, rpg, apg, spg, bpg, ppg, name):
     # #what we're searching over
@@ -112,7 +108,8 @@ def queryIndex(queryTypes, queryValue, ix, page_num=1):
     # # {"title": u"First document", "path": u"/a"}
 
 def method_1(ix):
-	writer = ix.writer(procs=4, limitmb=2048)
+	# make the insertion into the index faster, comment this out if running on a computer with limited RAM
+	writer = ix.writer(procs=4, limitmb=1024)
 	json_files = os.listdir("./Players JSONS")
     #to do for loop for all players the json files need to n
 	for file in json_files:
@@ -175,10 +172,12 @@ def method_1(ix):
 	writer.commit()
 
 def main():
-    #indexing()
+	#create the index files if they do not exist
 	ix = createIndex()
+	#add all files to the index, takes a few seconds
 	method_1(ix)
-
+	
+	#a test query
 	queryIndex("Name", "Jabbar", ix)
 
 
