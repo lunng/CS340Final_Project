@@ -47,14 +47,20 @@ def queryIndex(queryTypes, queryValue, ix, page_num=1):
 		query = MultifieldParser(queryTypes, ix.schema, group=qparser.OrGroup).parse(queryValue)
 		results = searcher.search(query, limit=None)
 		counted_results = searcher.search_page(query, page_num)	# first time calling page num is 1
-		print('tedt:' + str(counted_results[0]) + str(page_num))
+		
+		names_list = {}
+		names_list["filenames"] = []
+		names_list["playernames"] = []
+		
+		if results.is_empty():
+			return {}, names_list, 0
+			
+		print('test:' + str(counted_results[0]) + str(page_num))
 		#length of results
 		num = len(results)
 		num_pages = int(num / 10)	#because default is floating point
 
-		names_list = {}
-		names_list["filenames"] = []
-		names_list["playernames"] = []
+		
 		for result in results:
 			names_list["filenames"].append(result["Filename"])
 			names_list["playernames"].append(result["Name"])

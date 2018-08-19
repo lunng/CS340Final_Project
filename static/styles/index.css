@@ -138,6 +138,10 @@ th, td {
     border-bottom: 1px solid white;
 }
 
+.pagelink {
+	color: white;
+}
+
 footer{
   background-color: #343A40;
   color:white;

@@ -1,7 +1,7 @@
 #############################################################################
-#
 # CS 340 intro to Databases
 # Summer 2018
+# File Serving code for final project
 #############################################################################
 from flask import Flask, render_template, url_for, request
 from jinja2 import TemplateNotFound
@@ -90,8 +90,9 @@ def results():
 
 	nstr = re.sub(r'[?|$|.|!|#|@|~]',r'',query)
 	nestr = re.sub(r'[^a-zA-Z0-9 ]',r'',nstr)
+	
 	print("clean query : " + nestr)
-	print("clean query : " + nstr)
+	print("query : " + query)
 	ix = whoosh_script.openIndex()
 
 	searchType = searchButton(data2)
@@ -99,7 +100,7 @@ def results():
 	print(searchType)
 	data = {}
 
-	data,page_data, page_count = whoosh_script.queryIndex(searchType, query, ix, query2)
+	data, page_data, page_count = whoosh_script.queryIndex(searchType, query, ix, query2)
 	page_count = list(range(1,page_count+1))
 
 

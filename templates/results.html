@@ -100,7 +100,7 @@
 
 
 		{% for pages in page_count %}
-			<a href="{{ url_for('results', page_number = pages)}}">{{pages}}</a>
+			<a href="{{ url_for('results', page_number = pages)}}" class="pagelink">{{pages}}</a>
 		{% endfor %}
 
 		<!-- Required -->
